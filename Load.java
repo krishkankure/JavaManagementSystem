@@ -1,7 +1,10 @@
 package mgmt;
+import java.io.*;
 import java.util.Scanner;
 import java.util.Random;
 import java.util.HashMap;
+import java.util.Properties;
+import java.util.Map;
 public class Load {
 	boolean running = true;
 	Scanner s = new Scanner(System.in);
@@ -21,9 +24,12 @@ public class Load {
 	HashMap<Integer, String> edus = new HashMap<Integer, String>(); // creates new hashmap with string key and string value ()
 	HashMap<Integer, String> ages = new HashMap<Integer, String>(); // creates new hashmap with string key and string value ()
 	HashMap<Integer, Boolean> marriageStatus = new HashMap<Integer, Boolean>(); // creates new hashmap with string key and string value ()
+	final static String outputFilePath = "data/krishDB.txt";
+	File file = new File(outputFilePath); // created new way to print name and id to a file just edit so it has file for each hash read java for geeks article
 	public void mainMenu(){ // takes user info
 		System.out.println("| 1 = New User | 2 = Find User | 3 = Print All Users | 4 Delete a user | 5 Clear all users |");
 		while(running) {
+			save();
 			System.out.println(" ");
 			System.out.print("> ");
 			stdin = s.nextLine();
@@ -136,5 +142,43 @@ public class Load {
 				marriageStatus.remove(i);
 			}
 		}
+	}
+	public void save() {
+		File file = new File(outputFilePath);
+  
+        BufferedWriter bf = null;
+  
+        try {
+  
+            // create new BufferedWriter for the output file
+            bf = new BufferedWriter(new FileWriter(file));
+  
+            // iterate map entries
+            for (Map.Entry<Integer, String> entry :
+                 names.entrySet()) {
+  
+                // put key and value separated by a colon
+                bf.write(entry.getKey() + ":"
+                         + entry.getValue());
+  
+                // new line
+                bf.newLine();
+            }
+  
+            bf.flush();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+        finally {
+  
+            try {
+  
+                // always close the writer
+                bf.close();
+            }
+            catch (Exception e) {
+            }
+        }
 	}
 }
