@@ -22,7 +22,7 @@ public class Load {
 	HashMap<Integer, String> ages = new HashMap<Integer, String>(); // creates new hashmap with string key and string value ()
 	HashMap<Integer, Boolean> marriageStatus = new HashMap<Integer, Boolean>(); // creates new hashmap with string key and string value ()
 	public void mainMenu(){ // takes user info
-		System.out.println("| 1 = New User | 2 = Find User | 3 = Print All Users");
+		System.out.println("| 1 = New User | 2 = Find User | 3 = Print All Users | 4 Delete a user | 5 Clear all users |");
 		while(running) {
 			System.out.println(" ");
 			System.out.print("> ");
@@ -36,6 +36,12 @@ public class Load {
 			}
 			else if (stdin.equals("3")) {
 				printAll();
+			}
+			else if (stdin.equals("4")) {
+				deleteUser();
+			}
+			else if (stdin.equals("5")) {
+				clearDB();
 			}
 		}
 	}
@@ -65,6 +71,9 @@ public class Load {
 			married = false;
 		}
 		dummyId = idGen();
+		while(names.containsKey(dummyId)) {
+			dummyId = idGen();
+		}
 		names.put(dummyId, name);
 		cities.put(dummyId, city);	
 		jobs.put(dummyId, job);
@@ -77,18 +86,54 @@ public class Load {
 		return r.nextInt(500);
 	}
 	public void printProfile(Integer i) {
-		System.out.println("Name (id:" + i + "): " + names.get(i));
-		System.out.println("Location: " + cities.get(i));	
-		System.out.println("Current Job: " + jobs.get(i));
-		System.out.println("Education: " + edus.get(i));
-		System.out.println("Age: " + ages.get(i));
-		System.out.println("Maritial Status:" + marriageStatus.get(i));
+		if(names.containsKey(i)) {
+			System.out.println("Name (id:" + i + "): " + names.get(i));
+			System.out.println("Location: " + cities.get(i));	
+			System.out.println("Current Job: " + jobs.get(i));
+			System.out.println("Education: " + edus.get(i));
+			System.out.println("Age: " + ages.get(i));
+			System.out.println("Maritial Status:" + marriageStatus.get(i));
+		}
+		else {
+			System.out.println("No such user exists under that id");
+		}
 	}
 	public void printAll() {
 		System.out.println("All Registered Users: ");
 		for(int i = 0; i < 500; i++) {
 			if(names.get(i) != null) {
 				System.out.println(names.get(i) + ", " + ages.get(i));
+			}
+		}
+	}
+	public void deleteUser() {
+		System.out.println("Enter the id of the user");
+		int iPass = s.nextInt();
+		Integer iPassed = Integer.valueOf(iPass);
+		if(names.get(iPassed) != null) {
+			System.out.println("Deleted user" + names.get(iPassed) + " (" + iPassed + ")");
+			names.remove(iPassed);
+			jobs.remove(iPassed);
+			cities.remove(iPassed);
+			edus.remove(iPassed);
+			ages.remove(iPassed);
+			marriageStatus.remove(iPassed);
+		}
+		else {
+			System.out.println("No such user exists under that id");
+		}	
+	}
+	public void clearDB() {
+		System.out.println("Deleting All Registered Users: ");
+		for(int i = 0; i < 500; i++) {
+			if(names.get(i) != null) {
+				System.out.println("Deleting" + names.get(i) + ", " + ages.get(i));
+				names.remove(i);
+				jobs.remove(i);
+				cities.remove(i);
+				edus.remove(i);
+				ages.remove(i);
+				marriageStatus.remove(i);
 			}
 		}
 	}
