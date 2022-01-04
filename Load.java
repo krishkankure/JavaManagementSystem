@@ -62,12 +62,18 @@ public class Load {
 		printProfile(iPassed);
 	}
 	public void newUser() {
-		System.out.println("Please enter your name.");
+		System.out.println("Name.");
 		name = s.nextLine();
-		System.out.println("What city do you reside in?");
+		System.out.println("City");
 		city = s.nextLine();
-		System.out.println("What job do you currently work (Write Unemployed if needed)");
-		job = s.nextLine(); // go back to make unemployed if left blank
+		System.out.println("What job do you currently work (leave blank if unemployed)");
+		String dummyJob = s.nextLine(); // go back to make unemployed if left blank
+		if(dummyJob.equals("")) {
+			job = "Unemployed";
+		}
+		else {
+			dummyJob = job;
+		}
 		System.out.println("What university/school did you attend?");
 		edu = s.nextLine();
 		System.out.println("How old are you?");
