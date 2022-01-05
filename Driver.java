@@ -5,5 +5,6 @@ public class Driver {
 		Load l = new Load();
 		MainGUI m = new MainGUI();
 		l.mainMenu();
-	}
+		// m.mainScreen();
+	}	
 }

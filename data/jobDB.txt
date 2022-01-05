@@ -1,1 +1,3 @@
-251:Krish
+420:unemployed
+213:teacher
+234:doctor

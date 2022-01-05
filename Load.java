@@ -24,16 +24,25 @@ public class Load {
 	final static String outputFilePath = "data/krishDB.txt";
 	final static String filePath = "data/krishDB.txt";
 	File file = new File(outputFilePath); // created new way to print name and id to a file just edit so it has file for each hash read java for geeks article
+	public void saveAll() {
+		save("data/nameDB.txt", names);
+		save("data/jobDB.txt", jobs);
+		save("data/cityDB.txt", cities);
+		save("data/eduDB.txt", edus);
+		save("data/ageDB.txt", ages);
+	}
+	public void readAll() {
+		readData("data/nameDB.txt", names);
+		readData("data/jobDB.txt", jobs);
+		readData("data/cityDB.txt", cities);
+		readData("data/eduDB.txt", edus);
+		readData("data/ageDB.txt", ages);
+	}
 	public void mainMenu(){ // takes user info
-		readData();
+		readAll();
 		System.out.println("| 1 = New User | 2 = Find User | 3 = Print All Users | 4 Delete a user | 5 Clear all users |");
 		while(running) {
-			save("data/nameDB.txt", names);
-			save("data/jobDB.txt", names);
-			save("data/cityDB.txt", names);
-			save("data/eduDB.txt", names);
-			save("data/ageDB.txt", names);
-			save("data/marriageDB.txt", names);
+			saveAll();
 			System.out.println(" ");
 			System.out.print("> ");
 			stdin = s.nextLine();
@@ -61,32 +70,71 @@ public class Load {
 		Integer iPassed = Integer.valueOf(iPass);
 		printProfile(iPassed);
 	}
-	public void newUser() {
-		System.out.println("Name.");
-		name = s.nextLine();
-		System.out.println("City");
-		city = s.nextLine();
-		System.out.println("What job do you currently work (leave blank if unemployed)");
-		String dummyJob = s.nextLine(); // go back to make unemployed if left blank
+	public void takeName() {
+		String dummyName = s.nextLine();
+		while(dummyName.equals("")) {
+			System.out.println("Name can't be empty");
+			dummyName = s.nextLine();
+		}
+		name = dummyName;
+		names.put(dummyId, name);
+	}
+	public void checkId() {
+		dummyId = idGen();
+		while(names.containsKey(dummyId)) {
+			dummyId = idGen();
+		}
+		
+	}
+	public void takeCity() {
+		String dummyCity = s.nextLine();
+		while(dummyCity.equals("")) {
+			System.out.println("City cannot be empty");
+			dummyCity = s.nextLine();
+		}
+		city = dummyCity;
+		cities.put(dummyId, city);
+	}
+	public void takeJob() {
+		String dummyJob = s.nextLine(); // unemployed if left blank
 		if(dummyJob.equals("")) {
 			job = "Unemployed";
 		}
 		else {
 			dummyJob = job;
 		}
-		System.out.println("What university/school did you attend?");
-		edu = s.nextLine();
-		System.out.println("How old are you?");
-		age = s.nextLine();
-		dummyId = idGen();
-		while(names.containsKey(dummyId)) {
-			dummyId = idGen();
-		}
-		names.put(dummyId, name);
-		cities.put(dummyId, city);	
 		jobs.put(dummyId, job);
+	}
+	public void takeEdu() {
+		String dummyEdu = s.nextLine();
+		while(dummyEdu.equals("")) {
+			System.out.println("Education cannot be empty");
+			dummyEdu = s.nextLine();
+		}
+		edu = dummyEdu;
 		edus.put(dummyId, edu);
+	}
+	public void takeAge() {
+		String dummyAge = s.nextLine();
+		while(dummyAge.matches(".*[a-z].*") || dummyAge.equals("")) {
+			System.out.println("Invalid, enter age as number, nor can it be empty.");
+			dummyAge = s.nextLine();
+		}
+		age = dummyAge;
 		ages.put(dummyId, age);
+	}
+	public void newUser() {
+		checkId();
+		System.out.println("Name.");
+		takeName();
+		System.out.println("City");
+		takeCity();
+		System.out.println("What job do you currently work (leave blank if unemployed)");
+		takeJob();
+		System.out.println("What university/school did you attend?");
+		takeEdu();
+		System.out.println("How old are you?");
+		takeAge();
 		System.out.println("Created New User under id (" + dummyId + ")");
 	}
 	public int idGen() {
@@ -179,13 +227,13 @@ public class Load {
             }
         }
 	}
-	public void readData() {
+	public void readData(String path, HashMap<Integer, String> i) {
 		BufferedReader br = null;
   
         try {
   
             // create file object
-            File file = new File(filePath);
+            File file = new File(path);
   
             // create BufferedReader object from the File
             br = new BufferedReader(new FileReader(file));
@@ -205,7 +253,7 @@ public class Load {
                 // put name, number in HashMap if they are
                 // not empty
                 if (num != null && !namef.equals(""))
-                    names.put(num, namef);
+                    i.put(num, namef);
             }
         }
         catch (Exception e) {
