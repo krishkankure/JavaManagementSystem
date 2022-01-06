@@ -5,6 +5,8 @@ import java.util.Random;
 import java.util.HashMap;
 import java.util.Properties;
 import java.util.Map;
+import java.util.Map.Entry;
+
 public class Load {
 	boolean running = true;
 	Scanner s = new Scanner(System.in);
@@ -16,6 +18,7 @@ public class Load {
 	String age;
 	Integer dummyId;
 	String stdin;
+	Integer dummy;
 	HashMap<Integer, String> names = new HashMap<Integer, String>(); // creates new hashmap with string key and string value ()
 	HashMap<Integer, String> cities = new HashMap<Integer, String>(); // creates new hashmap with string key and string value ()
 	HashMap<Integer, String> jobs = new HashMap<Integer, String>(); // creates new hashmap with string key and string value ()
@@ -40,7 +43,7 @@ public class Load {
 	}
 	public void mainMenu(){ // takes user info
 		readAll();
-		System.out.println("| 1 = New User | 2 = Find User | 3 = Print All Users | 4 Delete a user | 5 Clear all users |");
+		System.out.println("| 1 = New User | 2 = Find User | 3 = Print All Users | 4 Delete a user | 5 Clear all users | 6 Find by name");
 		while(running) {
 			saveAll();
 			System.out.println(" ");
@@ -62,7 +65,15 @@ public class Load {
 			else if (stdin.equals("5")) {
 				clearDB();
 			}
+			else if (stdin.equals("6")) {
+
+			}
 		}
+	}
+	public void nameLauncher(){
+		System.out.println("Enter the name of requested user");
+		String input = s.nextLine();
+		System.out.println()
 	}
 	public void ppLauncher() {
 		System.out.println("Enter the id of the user");
@@ -189,6 +200,20 @@ public class Load {
 			}
 		}
 	}
+	public void findByName(String n) {
+		for(Entry<Integer, String> entry: names.entrySet()) {
+
+			// if give value is equal to value from entry
+			// print the corresponding key
+			if(entry.getValue() == n) { 
+				returner(entry.getKey());
+			}
+		}
+		
+	}
+	public Integer returner(Integer d) {
+		return d;
+	} 
 	public void save(String path, HashMap<Integer, String> i) {
 		File file = new File(path);
   
