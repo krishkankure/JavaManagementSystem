@@ -1,3 +1,4 @@
 420:unemployed
 213:teacher
 234:doctor
+499:ex president
