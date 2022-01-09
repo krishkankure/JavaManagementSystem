@@ -70,11 +70,11 @@ public class Load {
 			}
 		}
 	}
-	public void nameLauncher(){
-		System.out.println("Enter the name of requested user");
-		String input = s.nextLine();
-		System.out.println()
-	}
+	// public void nameLauncher(){
+	// 	System.out.println("Enter the name of requested user");
+	// 	String input = s.nextLine();
+	// 	System.out.println()
+	// }
 	public void ppLauncher() {
 		System.out.println("Enter the id of the user");
 		int iPass = s.nextInt();
@@ -200,20 +200,20 @@ public class Load {
 			}
 		}
 	}
-	public void findByName(String n) {
-		for(Entry<Integer, String> entry: names.entrySet()) {
+	// public void findByName(String n) {
+	// 	for(Entry<Integer, String> entry: names.entrySet()) {
 
-			// if give value is equal to value from entry
-			// print the corresponding key
-			if(entry.getValue() == n) { 
-				returner(entry.getKey());
-			}
-		}
+	// 		// if give value is equal to value from entry
+	// 		// print the corresponding key
+	// 		if(entry.getValue() == n) { 
+	// 			returner(entry.getKey());
+	// 		}
+	// 	}
 		
-	}
-	public Integer returner(Integer d) {
-		return d;
-	} 
+	// }
+	// public Integer returner(Integer d) {
+	// 	return d;
+	// } 
 	public void save(String path, HashMap<Integer, String> i) {
 		File file = new File(path);
   

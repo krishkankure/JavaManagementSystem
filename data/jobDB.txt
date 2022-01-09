@@ -1,4 +1,4 @@
+499:ex president
 420:unemployed
 213:teacher
-234:doctor
-499:ex president
+261:null
