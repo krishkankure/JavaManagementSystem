@@ -1,4 +1,0 @@
-499:ex president
-420:unemployed
-213:teacher
-261:null
