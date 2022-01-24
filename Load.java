@@ -19,34 +19,25 @@ public class Load {
 	Integer dummyId;
 	String stdin;
 	Integer dummy;
-	HashMap<Integer, String> names = new HashMap<Integer, String>(); // creates new hashmap with string key and string value ()
-	HashMap<Integer, String> cities = new HashMap<Integer, String>(); // creates new hashmap with string key and string value ()
-	HashMap<Integer, String> jobs = new HashMap<Integer, String>(); // creates new hashmap with string key and string value ()
-	HashMap<Integer, String> edus = new HashMap<Integer, String>(); // creates new hashmap with string key and string value ()
-	HashMap<Integer, String> ages = new HashMap<Integer, String>(); // creates new hashmap with string key and string value ()
+	HashMap<Integer, User> user = new HashMap<Integer, User>(); // creates new hashmap with string key and string value ()
 	final static String outputFilePath = "data/krishDB.txt";
-	final static String filePath = "data/krishDB.txt";
+	final static String filePath = "data/kusDB.txt";
 	File file = new File(outputFilePath); // created new way to print name and id to a file just edit so it has file for each hash read java for geeks article
 	public void saveAll() {
-		save("data/nameDB.txt", names);
-		save("data/jobDB.txt", jobs);
-		save("data/cityDB.txt", cities);
-		save("data/eduDB.txt", edus);
-		save("data/ageDB.txt", ages);
+		save(filePath, user);
 	}
 	public void readAll() {
-		readData("data/nameDB.txt", names);
-		readData("data/jobDB.txt", jobs);
-		readData("data/cityDB.txt", cities);
-		readData("data/eduDB.txt", edus);
-		readData("data/ageDB.txt", ages);
+		readData(filePath, user);
+
 	}
 	public void mainMenu(){ // takes user info
 		readAll();
-		System.out.println("| 1 = New User | 2 = Find User | 3 = Print All Users | 4 Delete a user | 5 Clear all users | 6 Find by name");
 		while(running) {
+			KusUtils.write("| 1 = New User | 2 = Find User | 3 = Print All Users | 4 Delete a user | 5 Clear all users | 6 Find by name");
+			System.out.println("__________________________________________________________");
 			saveAll();
-			System.out.println(" ");
+			
+			KusUtils.write(" ");
 			System.out.print("> ");
 			stdin = s.nextLine();
 			
@@ -66,17 +57,18 @@ public class Load {
 				clearDB();
 			}
 			else if (stdin.equals("6")) {
-
+				nameLauncher();
 			}
 		}
 	}
-	// public void nameLauncher(){
-	// 	System.out.println("Enter the name of requested user");
-	// 	String input = s.nextLine();
-	// 	System.out.println()
-	// }
+	
+	public void nameLauncher(){
+		KusUtils.write("Enter the name of requested user");
+		String input = s.nextLine();
+		findByName(input);
+	}
 	public void ppLauncher() {
-		System.out.println("Enter the id of the user");
+		KusUtils.write("Enter the id of the user");
 		int iPass = s.nextInt();
 		Integer iPassed = Integer.valueOf(iPass);
 		printProfile(iPassed);
@@ -84,15 +76,14 @@ public class Load {
 	public void takeName() {
 		String dummyName = s.nextLine();
 		while(dummyName.equals("")) {
-			System.out.println("Name can't be empty");
+			KusUtils.write("Name can't be empty");
 			dummyName = s.nextLine();
 		}
 		name = dummyName;
-		names.put(dummyId, name);
 	}
 	public void checkId() {
 		dummyId = idGen();
-		while(names.containsKey(dummyId)) {
+		while(user.containsKey(dummyId)) {
 			dummyId = idGen();
 		}
 		
@@ -100,137 +91,130 @@ public class Load {
 	public void takeCity() {
 		String dummyCity = s.nextLine();
 		while(dummyCity.equals("")) {
-			System.out.println("City cannot be empty");
+			KusUtils.write("City cannot be empty");
 			dummyCity = s.nextLine();
 		}
 		city = dummyCity;
-		cities.put(dummyId, city);
 	}
 	public void takeJob() {
 		String dummyJob = s.nextLine(); // unemployed if left blank
 		if(dummyJob.equals("")) {
-			job = "Unemployed";
+			dummyJob = "Unemployed";
 		}
 		else {
 			dummyJob = job;
 		}
-		jobs.put(dummyId, job);
+		job = dummyJob;
 	}
+	
 	public void takeEdu() {
 		String dummyEdu = s.nextLine();
 		while(dummyEdu.equals("")) {
-			System.out.println("Education cannot be empty");
+			KusUtils.write("Education cannot be empty");
 			dummyEdu = s.nextLine();
 		}
 		edu = dummyEdu;
-		edus.put(dummyId, edu);
 	}
 	public void takeAge() {
 		String dummyAge = s.nextLine();
 		while(dummyAge.matches(".*[a-z].*") || dummyAge.equals("")) {
-			System.out.println("Invalid, enter age as number, nor can it be empty.");
+			KusUtils.write("Invalid, enter age as number, nor can it be empty.");
 			dummyAge = s.nextLine();
 		}
 		age = dummyAge;
-		ages.put(dummyId, age);
 	}
 	public void newUser() {
 		checkId();
-		System.out.println("Name.");
+		KusUtils.write("What is your name?");
 		takeName();
-		System.out.println("City");
+		KusUtils.write("Where do you reside?");
 		takeCity();
-		System.out.println("What job do you currently work (leave blank if unemployed)");
+		KusUtils.write("What job do you currently work (leave blank if unemployed)");
 		takeJob();
-		System.out.println("What university/school did you attend?");
+		KusUtils.write("What university/school did you attend?");
 		takeEdu();
-		System.out.println("How old are you?");
+		KusUtils.write("How old are you?");
 		takeAge();
-		System.out.println("Created New User under id (" + dummyId + ")");
+		User u = new User(name, job, city, edu, age);
+		user.put(dummyId, u);
+		KusUtils.write("Created New User under id (" + dummyId + ")");
+		KusUtils.sleep(2000);
 	}
 	public int idGen() {
 		return r.nextInt(500);
 	}
+	
 	public void printProfile(Integer i) {
-		if(names.containsKey(i)) {
-			System.out.println("Name (id:" + i + "): " + names.get(i));
-			System.out.println("Location: " + cities.get(i));	
-			System.out.println("Current Job: " + jobs.get(i));
-			System.out.println("Education: " + edus.get(i));
-			System.out.println("Age: " + ages.get(i));
+		if(user.containsKey(i)) {
+			KusUtils.write("Name (id:" + i + "): " + user.get(i).getName());
+			KusUtils.write("Location: " + user.get(i).getCity());	
+			KusUtils.write("Current Job: " + user.get(i).getJob());
+			KusUtils.write("Education: " + user.get(i).getEdu());
+			KusUtils.write("Age: " + user.get(i).getAge());
 		}
 		else {
-			System.out.println("No such user exists under that id");
+			KusUtils.write("No such user exists under that id");
 		}
+		KusUtils.sleep(2000);
 	}
 	public void printAll() {
-		System.out.println("All Registered Users: ");
+		KusUtils.write("All Registered Users: ");
 		for(int i = 0; i < 500; i++) {
-			if(names.get(i) != null) {
-				System.out.println(names.get(i) + " (" + i + ")");
+			if(user.get(i) != null) {
+				
+				System.out.println(user.get(i).getName() + " (" + i + ")");
 			}
 		}
+		KusUtils.sleep(2000);
+		KusUtils.write("Hint: use [2 - Find User] to learn more about the user.");
+		KusUtils.sleep(250);
 	}
 	public void deleteUser() {
-		System.out.println("Enter the id of the user");
+		KusUtils.write("Enter the id of the user");
 		int iPass = s.nextInt();
 		Integer iPassed = Integer.valueOf(iPass);
-		if(names.get(iPassed) != null) {
-			System.out.println("Deleted user " + names.get(iPassed) + " (" + iPassed + ")");
-			names.remove(iPassed);
-			jobs.remove(iPassed);
-			cities.remove(iPassed);
-			edus.remove(iPassed);
-			ages.remove(iPassed);
+		if(user.get(iPassed) != null) {
+			KusUtils.write("Deleted user " + user.get(iPassed).getName() + " (" + iPassed + ")");
+			user.remove(iPassed);
 		}
 		else {
-			System.out.println("No such user exists under that id");
-		}	
+			KusUtils.write("No such user exists under that id");
+		}
+		KusUtils.sleep(2000);	
 	}
 	public void clearDB() {
-		System.out.println("Deleting All Registered Users: ");
+		KusUtils.write("Deleting All Registered Users: ");
 		for(int i = 0; i < 500; i++) {
-			if(names.get(i) != null) {
-				System.out.println("Deleting " + names.get(i) + " (" + i + ")");
-				names.remove(i);
-				jobs.remove(i);
-				cities.remove(i);
-				edus.remove(i);
-				ages.remove(i);
+			if(user.get(i) != null) {
+				System.out.println("Deleting " + user.get(i).getName() + " (" + i + ")");
+				user.remove(i);
 			}
 		}
+		KusUtils.sleep(2000);
 	}
-	// public void findByName(String n) {
-	// 	for(Entry<Integer, String> entry: names.entrySet()) {
-
-	// 		// if give value is equal to value from entry
-	// 		// print the corresponding key
-	// 		if(entry.getValue() == n) { 
-	// 			returner(entry.getKey());
-	// 		}
-	// 	}
+	public void findByName(String n) {
+		for (int key : user.keySet()) {
+			if(user.get(key).getName().contains(n)) {
+				KusUtils.write("User: " + user.get(key).getName() + " under ID: " + key);
+				
+			}
+		}
+		KusUtils.write(" ");
+		KusUtils.sleep(2000);
+		KusUtils.write("Hint: use [2 - Find User] to learn more about the user.");
+		KusUtils.sleep(250);
 		
-	// }
-	// public Integer returner(Integer d) {
-	// 	return d;
-	// } 
-	public void save(String path, HashMap<Integer, String> i) {
+	}
+	public void save(String path, HashMap<Integer, User> i) {
 		File file = new File(path);
   
         BufferedWriter bf = null;
   
         try {
-  
-            // create new BufferedWriter for the output file
-            bf = new BufferedWriter(new FileWriter(file));
-  
-            // iterate map entries
-            for (Map.Entry<Integer, String> entry :
+              bf = new BufferedWriter(new FileWriter(file));
+              for (Map.Entry<Integer, User> entry :
                  i.entrySet()) {
-  
-                // put key and value separated by a colon
-                bf.write(entry.getKey() + ":"
-                         + entry.getValue());
+                  bf.write(entry.getKey() + ":" + entry.getValue().getName() + ":" + entry.getValue().getCity() + ":" + entry.getValue().getJob() + ":" +  entry.getValue().getEdu() + ":" + entry.getValue().getAge());
   
                 // new line
                 bf.newLine();
@@ -244,24 +228,18 @@ public class Load {
         finally {
   
             try {
-  
-                // always close the writer
-                bf.close();
+                  bf.close();
             }
             catch (Exception e) {
             }
         }
 	}
-	public void readData(String path, HashMap<Integer, String> i) {
+	public void readData(String path, HashMap<Integer, User> i) {
 		BufferedReader br = null;
   
         try {
-  
-            // create file object
-            File file = new File(path);
-  
-            // create BufferedReader object from the File
-            br = new BufferedReader(new FileReader(file));
+              File file = new File(path);
+              br = new BufferedReader(new FileReader(file));
   
             String line = null;
   
@@ -273,12 +251,14 @@ public class Load {
   
                 // first part is name, second is number
                 Integer num = Integer.parseInt(parts[0].trim());
-                String namef = parts[1].trim();
-  
-                // put name, number in HashMap if they are
-                // not empty
-                if (num != null && !namef.equals(""))
-                    i.put(num, namef);
+                String uName = parts[1].trim();
+				String uCity = parts[2].trim();
+				String uJob = parts[3].trim();
+				String uEdu = parts[4].trim();
+				String uAge = parts[5].trim();
+				User nu = new User(uName, uJob, uCity, uEdu, uAge);
+                if (num != null && !uName.equals(""))
+                    i.put(num, nu);
             }
         }
         catch (Exception e) {
@@ -286,7 +266,6 @@ public class Load {
         }
         finally {
   
-            // Always close the BufferedReader
             if (br != null) {
                 try {
                     br.close();
