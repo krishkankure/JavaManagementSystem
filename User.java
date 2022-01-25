@@ -20,7 +20,7 @@ public class User {
       return job;
     }
     public String getCity() {
-      return name;
+      return city;
     }
     public String getEdu() {
       return edu;
