@@ -1,77 +1,75 @@
-package mgmt;
-import java.io.*;
-import java.util.Scanner;
-import java.util.Random;
-import java.util.HashMap;
-import java.util.Properties;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.lang.Math;
-public class Load {
-	boolean running = true;
-	Scanner s = new Scanner(System.in);
-	Random r = new Random();
-	String name;
-	String job;
-	String edu;
-	String city;
-	String age;
-	Integer dummyId;
-	String stdin;
-	Integer dummy;
-	HashMap<Integer, User> user = new HashMap<Integer, User>(); // creates new hashmap with string key and string value ()
-	final static String outputFilePath = "data/krishDB.txt";
-	final static String filePath = "data/kusDB.txt";
-	File file = new File(outputFilePath); // created new way to print name and id to a file just edit so it has file for each hash read java for geeks article
-	private static final StringBuilder res = new StringBuilder();;
-	final String os = System.getProperty("os.name");
-	final String arch = System.getProperty("os.arch");
-	final String version = System.getProperty("os.version");
-	final String jreVersion = System.getProperty("java.version");
-	final String userName = System.getProperty("user.name");
-	public void saveAll() {
+package mgmt; // package of mgmt
+import java.io.*; // all of java.io for convinience
+import java.util.Scanner; // scanner for taking input
+import java.util.Random; // random for random numbers, mainly id generate
+import java.util.HashMap; // hashmaps to store ids and User objects
+import java.util.Properties; // For writing to files
+import java.util.Map; // for referring the HashMap
+import java.util.Map.Entry; // extended part of map
+import java.lang.Math; // math for brief parts throughout the program
+public class Load { // main class of the project
+	boolean running = true; // condition that main menu runs on
+	Scanner s = new Scanner(System.in); // scanner init
+	Random r = new Random(); // random init
+	String name; // name of user
+	String job; // job of user
+	String edu; // edu of user
+	String city; // city of user
+	String age; // age of user
+	Integer dummyId; // dummyId to be checked before assigning it to the hashmap
+	String stdin; // input in the main menu
+	Integer dummy; 
+	HashMap<Integer, User> user = new HashMap<Integer, User>(); // creates new hashmap with string key and user, an object, value 
+	final static String filePath = "data/kusDB.txt"; //output path for the program to write and read from
+	private static final StringBuilder res = new StringBuilder();;  // String builder for the progress bar animation.
+	final String os = System.getProperty("os.name"); // finds the name of the users operating system (ie Windows MacOS Linux etc.)
+	final String arch = System.getProperty("os.arch"); // find the name of the users architecture (ie amd64, i386, etc) 
+	final String version = System.getProperty("os.version"); //finds the name of the users version of their os ("Windows 10", "MacOS Big Sur", "Linux Kernel 5.8");
+	final String jreVersion = System.getProperty("java.version"); // finds the name of the jre version 
+	final String userName = System.getProperty("user.name"); // finds the name of the user.name in their current operating system (On my personal laptop its Krish, on a school computer it would be 994806350)
+	public void saveAll() { // calls the method to call the method to save under the filepath specified in the filepath string. It saves the entire user hashmap to a file.
 		save(filePath, user);
 	}
 	public void readAll() {
-		KusUtils.write("[OK] Entering KusUtils readAll...");
-		readData(filePath, user);
+		KusUtils.write("[OK] Entering KusUtils readAll..."); // as specified this is calling a method in the kureUtils class to print letter by letter with a delay
+		readData(filePath, user); // reads data from filePath and it stores it in the user hashmap;
 
 	}
-	public void clearCL() {
+	public void clearCL() { // clears the terminal screen
 		try {
-			if (os.contains("Windows")) {
+			if (os.contains("Windows")) { // if the os is windows, do the windows versions for clearing the screen
 				new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
 			}   
-        	else {
+        	else { // otherwise do clear, a universal clearing command for both Windows and Unix
 				Runtime.getRuntime().exec("clear");
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			e.printStackTrace(); //handles errors and exceptions and prints it
 		}
 		
 	}
-	public static String progressBar(int pct) throws Exception{
+	public static String progressBar(int pct) throws Exception{ // throws exception if it were to fail.
 		res.delete(0, res.length());
 		int numPounds = (pct + 9) / 10;
-		for (int i = 0 ; i != numPounds ; i++) {
+		for (int i = 0 ; i != numPounds ; i++) { // for i increased/iterating add a * to string.
 			res.append('*');
 		}
 		while (res.length() != 10) {
-			res.append(' ');
+			res.append(' '); // stop when at 10
 		}
-		return res.toString();
+		return res.toString(); //returns the bar as a string
 	}
 	public void startup() throws Exception {
-		KusUtils.sleep(250);
-		startBar();
-		reScreen();
-		clearCL();
-		intro();
-		clearCL();
-		loading();
-		clearCL();
-		intro();
-		clearCL();
+		KusUtils.sleep(250); // sleeps=, this method is defined in KureUtils
+		startBar(); // starts the bar
+		reScreen(); //prompts user to maximize their terminal window as the ascii wont display properly
+		clearCL(); // clears screen
+		intro(); // prints logo ascii
+		clearCL(); // clears
+		loading(); // adds a debug screen that looks aesthetically cool and helps with the debugging of the code
+		clearCL(); // clears screen
+		intro(); // once again displays logo
+		clearCL(); // clears again and the program starts.
 	}
 	public void loading() {
 		KusUtils.write("[OK] Reading data..");
@@ -83,19 +81,19 @@ public class Load {
 		KusUtils.sleep(250);
 		KusUtils.write("[OK] Detecting Info...");
 		KusUtils.sleep(2500);
-		if (os.contains("Windows")) {
-			KusUtils.write("[INFO] Detected Windows (" + arch + ") System, version " + version);
+		if (os.contains("Windows")) { // if the OS is windows it will mention that is a windows computer
+			KusUtils.write("[INFO] Detected Windows (" + arch + ") System, version " + version); // prints architecture and version
 		}   
-		else {
-			KusUtils.write("[INFO] Detected Unix System (" + arch + "), VERSION: " + version);
+		else { // otherwise it highly likely that it is unix/unix-based operating system like Linux, MacOS, BSD.
+			KusUtils.write("[INFO] Detected Unix System (" + arch + "), VERSION: " + version); // prints architecture and version
 		}
 		KusUtils.sleep(250);
-		KusUtils.write("[INFO] Using JRE Version " + jreVersion);
-		KusUtils.write("[INFO] Admin User Name: " + userName);
+		KusUtils.write("[INFO] Using JRE Version " + jreVersion); // prints current jre version
+		KusUtils.write("[INFO] Admin User Name: " + userName); // prints the users system user name
 		KusUtils.sleep(7000);
 
 	}
-	public void intro() {
+	public void intro() { // cool ascii art for KUS
 		
 		System.out.println("___   _  _______  __    _  ___   _  __   __  ______    _______                                     "); 
 		System.out.println("|   | | ||   _   ||  |  | ||   | | ||  | |  ||    _ |  |       |                                   "); 
@@ -111,84 +109,84 @@ public class Load {
 		System.out.println("|       ||_____  ||    ___||    __  |        |_____  ||_     _||_____  |  |   |  |    ___||       |");
 		System.out.println("|       | _____| ||   |___ |   |  | | _____   _____| |  |   |   _____| |  |   |  |   |___ | ||_|| |");
 		System.out.println("|_______||_______||_______||___|  |_||_____| |_______|  |___|  |_______|  |___|  |_______||_|   |_|");
-		KusUtils.sleep(3000);
+		KusUtils.sleep(3000); //sleeps after it printed for the user to admire
 	}
-	public void startBar() throws Exception {
+	public void startBar() throws Exception { //starts the prgress bar, throws exception to handle error
 		try {
-			for (int i = 0 ; i <= 100 ; i++) {
-				Thread.sleep(10);
-				System.out.print(String.format("[%s]%d%%\r", progressBar(i), i));
+			for (int i = 0 ; i <= 100 ; i++) { // for i to 100
+				Thread.sleep(10); // sleeps
+				System.out.print(String.format("[%s]%d%%\r", progressBar(i), i)); // formats the bar and calls the progress bar function itself
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	public void reScreen() {
+	public void reScreen() { // prompts user to maximize/resize their screen in order to display the programm properly
 		clearCL();
-		KusUtils.write("It is highly recommended that you make your PowerShell window maximized in order to view the program correctly.");
+		KusUtils.write("WARNING: It is highly recommended that you make your PowerShell window maximized in order to view the program correctly.");
 		System.out.println(" ");
 		KusUtils.sleep(250);
 		KusUtils.write("Press Enter to return to Continue");
-		Scanner ns = new Scanner(System.in);
+		Scanner ns = new Scanner(System.in); // functions as a way for the user to read and continue when done reading
 		ns.nextLine();
 	}
-	public void mainMenu() throws Exception{ // takes user info
-		startup();
+	public void mainMenu() throws Exception{ // main loop method of the programs
+		startup(); // calls the entire startup method which calls sub-methods
 		while(running) {
-			clearCL();
-			KusUtils.write("| 1 = New User | 2 = Find User by ID | 3 = Print All Users | 4 Delete a user | 5 Clear all users | 6 Find User by NAME | 7 Info | 8 Exit");
+			clearCL(); //clears screen
+			KusUtils.write("| 1 = New User | 2 = Find User by ID | 3 = Print All Users | 4 Delete a user | 5 Clear all users | 6 Find User by NAME | 7 Info | 8 Exit"); // list of commands prints every time
 			System.out.println("_____________________________________________________________________________________________________________________________________>");
-			saveAll();
+			saveAll(); // auto-saves every time the user is brought to this screen, that is always after a user is a created, thus their is a very low chance of data not being saved
 			
-			KusUtils.write(" ");
-			System.out.print("> ");
-			stdin = s.nextLine();
-			
-			if (stdin.equals("1")) {
+			KusUtils.write(" "); 
+			System.out.print("> "); // carrot for the user to know that they should enter text
+			stdin = s.nextLine(); // takes input
+			// always clearing screen below before method is called to avoid it being printed on the main menu screen 
+			if (stdin.equals("1")) { // calls new user method
 				clearCL();
 				newUser();
 			}
-			else if (stdin.equals("2")) {
+			else if (stdin.equals("2")) { // calls method that calls the print profile method
 				clearCL();
 				ppLauncher();
 			}
-			else if (stdin.equals("3")) {
+			else if (stdin.equals("3")) { // calls print all method
 				clearCL();
 				printAll();
 			}
-			else if (stdin.equals("4")) {
+			else if (stdin.equals("4")) { // calls the user deletion method
 				clearCL();
 				deleteUser();
 			}
-			else if (stdin.equals("5")) {
+			else if (stdin.equals("5")) { // calls method that confirms the clearing of the entire hashmap and text files.
 				clearCL();
 				confirmDelete();
 			}
-			else if (stdin.equals("6")) {
+			else if (stdin.equals("6")) { // calls the name search launcher method
 				clearCL();
 				nameLauncher();
 			}
-			else if (stdin.equals("7")) {
+			else if (stdin.equals("7")) { // calls the info screen method
 				clearCL();
 				info();
 			}
-			else if (stdin.equals("8")) {
+			else if (stdin.equals("8")) { // exits the program
 				clearCL();
-				System.exit(0);
+				System.exit(0); // the (0) exit code means that the program exited sucessfully.
 			}
 
 		}
 	}
 	
-	public void nameLauncher(){
+	public void nameLauncher(){ // launches name search
 		
 		KusUtils.write("Enter the name of requested user");
 		System.out.println(" ");
 		System.out.print("> ");
 		String input = s.nextLine();
-		findByName(input);
+		findByName(input); // calls the name searching method which will then print it to the console.
 	}
-	public void searchLogo() {
+	public void searchLogo() {  //ascii for the find user screen
 		System.out.println(" _______  ___   __    _  ______           __   __  _______  _______  ______   ");
 		System.out.println("|       ||   | |  |  | ||      |         |  | |  ||       ||       ||    _ |  ");
 		System.out.println("|    ___||   | |   |_| ||  _    |        |  | |  ||  _____||    ___||   | ||  ");
@@ -200,7 +198,7 @@ public class Load {
 		System.out.println(" ");
 		System.out.println("________________________________________________________________________");
 	}
-	public void ppLauncher() {
+	public void ppLauncher() { // takes input and calls print profile method which passes through the integer passed through by the user.
 		searchLogo();
 		System.out.println(" ");
 		System.out.print("> ");
@@ -209,75 +207,75 @@ public class Load {
 		Integer iPassed = Integer.valueOf(iPass);
 		printProfile(iPassed);
 	}
-	public void takeName() {
+	public void takeName() { // takes name
 		System.out.println(" ");
 		System.out.print("> ");
-		String dummyName = s.nextLine();
+		String dummyName = s.nextLine(); //assigns it to dummy value to be check
 		while(dummyName.equals("")) {
 			KusUtils.write("Name can't be empty");
 			System.out.println(" ");
 			System.out.print("> ");
 			dummyName = s.nextLine();
 		}
-		name = dummyName;
+		name = dummyName; // when it is check in the while loop above, dummyName is assigned to name, which is the variable that is passed through for a user object
 	}
 	public void checkId() {
-		dummyId = idGen();
-		while(user.containsKey(dummyId)) {
-			dummyId = idGen();
+		dummyId = idGen(); // generates id 
+		while(user.containsKey(dummyId)) { //check if the id already exists
+			dummyId = idGen(); // if it does exist, generate another one.
 		}
 		
 	}
-	public void takeCity() {
+	public void takeCity() { // takes user city
 		System.out.println(" ");
 		System.out.print("> ");
 		String dummyCity = s.nextLine();
-		while(dummyCity.equals("")) {
+		while(dummyCity.equals("")) { // checks if null
 			KusUtils.write("City cannot be empty");
 			System.out.println(" ");
 			System.out.print("> ");
 			dummyCity = s.nextLine();
 		}
-		city = dummyCity;
+		city = dummyCity; // assigns it to city
 	}
-	public void takeJob() {
+	public void takeJob() { // takes user job
 		System.out.println(" ");
 		System.out.print("> ");
 		String dummyJob = s.nextLine(); // unemployed if left blank
-		if(dummyJob.equals("")) {
+		if(dummyJob.equals("")) { // if null, job is unemployed
 			job = "Unemployed";
 		}
 		else {
-			job = dummyJob;
+			job = dummyJob; // otherwise dummyJob is assigned to job
 		}
 		
 	}
 	
-	public void takeEdu() {
+	public void takeEdu() { // takes user education
 		System.out.println(" ");
 		System.out.print("> ");
-		String dummyEdu = s.nextLine();
-		while(dummyEdu.equals("")) {
+		String dummyEdu = s.nextLine(); 
+		while(dummyEdu.equals("")) { // checks if null
 			KusUtils.write("Education cannot be empty, enter highest level of education.");
 			System.out.println(" ");
 			System.out.print("> ");
 			dummyEdu = s.nextLine();
 		}
-		edu = dummyEdu;
+		edu = dummyEdu; //assigns dummyEdu to edu
 	}
-	public void takeAge() {
+	public void takeAge() { // takes user age
 		System.out.println(" ");
 		System.out.print("> ");
 		String dummyAge = s.nextLine();
-		while(dummyAge.matches(".*[a-z].*") || dummyAge.equals("")) {
+		while(dummyAge.matches(".*[a-z].*") || dummyAge.equals("")) { // checks if it includes anything other than numbers or if its null
 			KusUtils.write("Invalid, enter age as number, nor can it be empty.");
 			System.out.println(" ");
 			System.out.print("> ");
-			dummyAge = s.nextLine();
+			dummyAge = s.nextLine(); // takes input again until the conditions are no longer met
 		}
-		age = String.valueOf(Math.abs(Integer.parseInt(dummyAge)));
+		age = String.valueOf(Math.abs(Integer.parseInt(dummyAge))); // assigned dummy age to age. It first converts the string to an Integer and than takes the absolute value in the case that it is a negative number
 	}
-	public void newUserLogo() {
+	public void newUserLogo() { // ascii  art for new user screen
 		System.out.println(" __    _  _______  _     _          __   __  _______  _______  ______   ");
 		System.out.println("|  |  | ||       || | _ | |        |  | |  ||       ||       ||    _ |  ");
 		System.out.println("|   |_| ||    ___|| || || |        |  | |  ||  _____||    ___||   | ||  ");
@@ -289,7 +287,7 @@ public class Load {
 		System.out.println(" ");
 		System.out.println("________________________________________________________________________");
 	}
-	public void newUser() {
+	public void newUser() { // creates new user
 		newUserLogo();
 		checkId();
 		KusUtils.write("What is your name?");
@@ -302,17 +300,16 @@ public class Load {
 		takeEdu();
 		KusUtils.write("How old are you?");
 		takeAge();
-		User u = new User(name, job, city, edu, age);
-		user.put(dummyId, u);
+		User u = new User(name, job, city, edu, age); // creates new user objects with the values collected by the take* functions
+		user.put(dummyId, u); // adds to hashmap with the id as the key and the user object as the value
 		KusUtils.write("Created New User under id (" + dummyId + ")");
-		exit();
-		clearCL();
+		exit(); // calls exit a formatting method
 	}
-	public int idGen() {
+	public int idGen() { // generates a random id between 0 and 500
 		return r.nextInt(500);
 	}
-	public void info() {
-		System.out.println("___   _  _______  __    _  ___   _  __   __  ______    _______                                     "); 
+	public void info() { // info screen
+		KusUtils.pour(" ___   _  _______  __    _  ___   _  __   __  ______    _______                                    "); // calls the pour method in KusUtils to have a faster typewriter effect 
 		KusUtils.pour("|   | | ||   _   ||  |  | ||   | | ||  | |  ||    _ |  |       |                                   "); 
 		KusUtils.pour("|   |_| ||  |_|  ||   |_| ||   |_| ||  | |  ||   | ||  |    ___|                                   ");  
 		KusUtils.pour("|      _||       ||       ||      _||  |_|  ||   |_||_ |   |___                                    "); 
@@ -331,46 +328,48 @@ public class Load {
 		System.out.println("________________________________________________________________________");
 		System.out.println(" ");
 		System.out.println(" ");
-		KusUtils.write("KANKURE USER SYSTEM v1.1 BETA");
+		KusUtils.write("KANKURE USER SYSTEM v1.1 BETA"); // version of KUS
 		System.out.println(" ");
-		KusUtils.write("Host Info: " + os + " " + version + " (" + arch + ")");
+		KusUtils.write("Host Info: " + os + " " + version + " (" + arch + ")"); // prints os, the os version, and the computer architecture
 		System.out.println(" ");
-		KusUtils.write("Admin User Name: " + userName);
+		KusUtils.write("Admin User Name: " + userName); // prints username, this is used to confirm full deletion of the database
 		System.out.println(" ");
-		KusUtils.write("JRE Version: " + jreVersion);
-		exit();
+		KusUtils.write("JRE Version: " + jreVersion); // prints jre version
+		exit(); //prompts user to exit
 
 	}
-	public void printProfile(Integer i) {
-		if(user.containsKey(i)) {
+	public void printProfile(Integer i) { // takes the i value taken by ppLauncher() and prints the info associated with the key i.
+		if(user.containsKey(i)) { // the key i exists...
 			KusUtils.write("Name (id:" + i + "): " + user.get(i).getName());
 			KusUtils.write("Location: " + user.get(i).getCity());	
 			KusUtils.write("Current Job: " + user.get(i).getJob());
 			KusUtils.write("Education: " + user.get(i).getEdu());
 			KusUtils.write("Age: " + user.get(i).getAge());
 		}
-		else {
+		else { // if i is not a key in the user hashmap
 			KusUtils.write("No such user exists under that id");
 		}
 		exit();
 	}
 	public void printAll() {
 		KusUtils.write("All Registered Users: ");
-		for(int i = 0; i < 500; i++) {
-			if(user.get(i) != null) {
+		for(int i = 0; i < 500; i++) { // for every iteration, i increased by one, until 500, the user limit on KUS
+			if(user.get(i) != null) { // if i is not null, meaning that key I exists and contains a value
 				
-				System.out.println(user.get(i).getName() + " (" + i + ")");
+				System.out.println(user.get(i).getName() + " (" + i + ")"); //prints it to the console.
 			}
 		}
 		KusUtils.sleep(250);
-		KusUtils.write("Hint: use [2 - Find User] to learn more about the user.");
+		KusUtils.write("Hint: use [2 - Find User] to learn more about the user."); // prompts user to learn about the user
 		exit();
 	}
-	public void exit() {
+	public void exit() { // function to help condense methods as every method will end with a prompt to end
 		System.out.println(" ");
 		KusUtils.sleep(250);
 		KusUtils.write("Press Enter to return to Main Menu");
-		Scanner ns = new Scanner(System.in);
+		Scanner ns = new Scanner(System.in); 
+		/* waits for user to enter scanner, because this is the last line of code, when the user presses enter, 
+		the method ends and the main menu loop continues, thus bringing the user back to the main menu */
 		ns.nextLine();
 	}
 	public void deleteLogo() {
