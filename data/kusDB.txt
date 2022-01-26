@@ -1,2 +1,1 @@
-152:Krish:Unemployed:Boston:High School at Nashua High:23
-312:Krish:Unemployed:Nashville:Nashua CC:22
+312:Krish Kankure:Student:Nashua, Nh:Cool People School:15

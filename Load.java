@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Properties;
 import java.util.Map;
 import java.util.Map.Entry;
-
+import java.lang.Math;
 public class Load {
 	boolean running = true;
 	Scanner s = new Scanner(System.in);
@@ -28,6 +28,7 @@ public class Load {
 	final String arch = System.getProperty("os.arch");
 	final String version = System.getProperty("os.version");
 	final String jreVersion = System.getProperty("java.version");
+	final String userName = System.getProperty("user.name");
 	public void saveAll() {
 		save(filePath, user);
 	}
@@ -63,6 +64,7 @@ public class Load {
 	public void startup() throws Exception {
 		KusUtils.sleep(250);
 		startBar();
+		reScreen();
 		clearCL();
 		intro();
 		clearCL();
@@ -89,7 +91,8 @@ public class Load {
 		}
 		KusUtils.sleep(250);
 		KusUtils.write("[INFO] Using JRE Version " + jreVersion);
-		KusUtils.sleep(7500);
+		KusUtils.write("[INFO] Admin User Name: " + userName);
+		KusUtils.sleep(7000);
 
 	}
 	public void intro() {
@@ -119,6 +122,15 @@ public class Load {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	public void reScreen() {
+		clearCL();
+		KusUtils.write("It is highly recommended that you make your PowerShell window maximized in order to view the program correctly.");
+		System.out.println(" ");
+		KusUtils.sleep(250);
+		KusUtils.write("Press Enter to return to Continue");
+		Scanner ns = new Scanner(System.in);
+		ns.nextLine();
 	}
 	public void mainMenu() throws Exception{ // takes user info
 		startup();
@@ -150,7 +162,7 @@ public class Load {
 			}
 			else if (stdin.equals("5")) {
 				clearCL();
-				clearDB();
+				confirmDelete();
 			}
 			else if (stdin.equals("6")) {
 				clearCL();
@@ -233,12 +245,12 @@ public class Load {
 		System.out.print("> ");
 		String dummyJob = s.nextLine(); // unemployed if left blank
 		if(dummyJob.equals("")) {
-			dummyJob = "Unemployed";
+			job = "Unemployed";
 		}
 		else {
-			dummyJob = job;
+			job = dummyJob;
 		}
-		job = dummyJob;
+		
 	}
 	
 	public void takeEdu() {
@@ -263,7 +275,7 @@ public class Load {
 			System.out.print("> ");
 			dummyAge = s.nextLine();
 		}
-		age = dummyAge;
+		age = String.valueOf(Math.abs(Integer.parseInt(dummyAge)));
 	}
 	public void newUserLogo() {
 		System.out.println(" __    _  _______  _     _          __   __  _______  _______  ______   ");
@@ -293,7 +305,7 @@ public class Load {
 		User u = new User(name, job, city, edu, age);
 		user.put(dummyId, u);
 		KusUtils.write("Created New User under id (" + dummyId + ")");
-		KusUtils.sleep(2000);
+		exit();
 		clearCL();
 	}
 	public int idGen() {
@@ -301,19 +313,19 @@ public class Load {
 	}
 	public void info() {
 		System.out.println("___   _  _______  __    _  ___   _  __   __  ______    _______                                     "); 
-		System.out.println("|   | | ||   _   ||  |  | ||   | | ||  | |  ||    _ |  |       |                                   "); 
-		System.out.println("|   |_| ||  |_|  ||   |_| ||   |_| ||  | |  ||   | ||  |    ___|                                   ");  
-		System.out.println("|      _||       ||       ||      _||  |_|  ||   |_||_ |   |___                                    "); 
-		System.out.println("|     |_ |       ||  _    ||     |_ |       ||    __  ||    ___|                                   "); 
-		System.out.println("|    _  ||   _   || | |   ||    _  ||       ||   |  | ||   |___                                    ");  
-		System.out.println("|___| |_||__| |__||_|  |__||___| |_||_______||___|  |_||_______|                                   "); 
-		System.out.println("__   __  _______  _______  ______            _______  __   __  _______  _______  _______  __   __  ");
-		System.out.println(" |  | |  ||       ||       ||    _ |          |       ||  | |  ||       ||       ||       ||  |_| |");
-		System.out.println("|  | |  ||  _____||    ___||   | ||          |  _____||  |_|  ||  _____||_     _||    ___||       |");
-		System.out.println("|  |_|  || |_____ |   |___ |   |_||_         | |_____ |       || |_____   |   |  |   |___ |       |");
-		System.out.println("|       ||_____  ||    ___||    __  |        |_____  ||_     _||_____  |  |   |  |    ___||       |");
-		System.out.println("|       | _____| ||   |___ |   |  | | _____   _____| |  |   |   _____| |  |   |  |   |___ | ||_|| |");
-		System.out.println("|_______||_______||_______||___|  |_||_____| |_______|  |___|  |_______|  |___|  |_______||_|   |_|");
+		KusUtils.pour("|   | | ||   _   ||  |  | ||   | | ||  | |  ||    _ |  |       |                                   "); 
+		KusUtils.pour("|   |_| ||  |_|  ||   |_| ||   |_| ||  | |  ||   | ||  |    ___|                                   ");  
+		KusUtils.pour("|      _||       ||       ||      _||  |_|  ||   |_||_ |   |___                                    "); 
+		KusUtils.pour("|     |_ |       ||  _    ||     |_ |       ||    __  ||    ___|                                   "); 
+		KusUtils.pour("|    _  ||   _   || | |   ||    _  ||       ||   |  | ||   |___                                    ");  
+		KusUtils.pour("|___| |_||__| |__||_|  |__||___| |_||_______||___|  |_||_______|                                   "); 
+		KusUtils.pour("__   __  _______  _______  ______            _______  __   __  _______  _______  _______  __   __  ");
+		KusUtils.pour(" |  | |  ||       ||       ||    _ |          |       ||  | |  ||       ||       ||       ||  |_| |");
+		KusUtils.pour("|  | |  ||  _____||    ___||   | ||          |  _____||  |_|  ||  _____||_     _||    ___||       |");
+		KusUtils.pour("|  |_|  || |_____ |   |___ |   |_||_         | |_____ |       || |_____   |   |  |   |___ |       |");
+		KusUtils.pour("|       ||_____  ||    ___||    __  |        |_____  ||_     _||_____  |  |   |  |    ___||       |");
+		KusUtils.pour("|       | _____| ||   |___ |   |  | | _____   _____| |  |   |   _____| |  |   |  |   |___ | ||_|| |");
+		KusUtils.pour("|_______||_______||_______||___|  |_||_____| |_______|  |___|  |_______|  |___|  |_______||_|   |_|");
 		System.out.println(" ");
 		System.out.println(" ");
 		System.out.println("________________________________________________________________________");
@@ -322,6 +334,8 @@ public class Load {
 		KusUtils.write("KANKURE USER SYSTEM v1.1 BETA");
 		System.out.println(" ");
 		KusUtils.write("Host Info: " + os + " " + version + " (" + arch + ")");
+		System.out.println(" ");
+		KusUtils.write("Admin User Name: " + userName);
 		System.out.println(" ");
 		KusUtils.write("JRE Version: " + jreVersion);
 		exit();
@@ -385,6 +399,21 @@ public class Load {
 		}
 		exit();	
 	}
+	public void confirmDelete() {
+		KusUtils.write("All users on this KUS DB will be erased. Enter your user name on this computer to confirm");
+		Scanner s = new Scanner(System.in);
+		System.out.println(" ");
+		System.out.print("> ");
+		String opt = s.nextLine();
+		if (opt.equalsIgnoreCase(userName)) {
+			clearCL();
+			clearDB();
+		}
+		else {
+			KusUtils.write("Process Aborted, incorrect User Name");
+			exit();
+		}
+	}
 	public void clearDB() {
 		KusUtils.write("Deleting All Registered Users: ");
 		for(int i = 0; i < 500; i++) {
@@ -398,7 +427,7 @@ public class Load {
 	public void findByName(String n) {
 		searchLogo();
 		for (int key : user.keySet()) {
-			if(user.get(key).getName().contains(n)) {
+			if(user.get(key).getName().toLowerCase().contains(n)) {
 				KusUtils.write("User: " + user.get(key).getName() + " under ID: " + key);
 				
 			}

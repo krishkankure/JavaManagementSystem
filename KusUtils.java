@@ -22,4 +22,17 @@ public class KusUtils {
             Thread.currentThread().interrupt();
         }
     }
+    public static void pour(String text) {
+        for(int i = 0; i < text.length(); i++){
+            System.out.printf("%c", text.charAt(i));
+            try {
+                Thread.sleep(1);//0.5s pause between characters
+            }
+            catch(InterruptedException ex){
+                Thread.currentThread().interrupt();
+            }
+            
+        }
+        System.out.println(" ");
+    }
 }
