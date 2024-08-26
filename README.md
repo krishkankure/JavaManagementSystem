@@ -12,7 +12,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-Kankure User System is a program written to allow the storage of user information and preserve it through it's own file saving system. It is aesthetically similar to a Linux system.
+Management User System is a program written to allow the storage of user information and preserve it through it's own file saving system. It is aesthetically similar to a Linux system.
 
 <!-- GETTING STARTED -->
 ## Getting Started
